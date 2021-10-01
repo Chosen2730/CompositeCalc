@@ -9,7 +9,9 @@ const form =({subject, setInputText, inputText,
     gradevalue3, setGradeValue3, 
     gradevalue4, setGradeValue4, 
     gradevalue5, setGradeValue5, 
-    composite, setComposite})=>{
+    composite, setComposite,
+    DEvalue, setDEvalue,
+    DEinput, setDEinput})=>{
 
 
     const inputHandler = (e)=>{
@@ -21,15 +23,30 @@ const form =({subject, setInputText, inputText,
     const postUtmeInput = (e)=>{
         setPostUTMEScore(e.target.value)
     }
+    const calcGrade = ()=>{
+        const Olevel = ((Number(gradevalue1) + Number(gradevalue2) + Number(gradevalue3) + 
+        Number(gradevalue4) + Number(gradevalue5))/30)*20;
+        const UTME = Number(utmeScore)/8;
+        const PUTME = ((Number(postUTMEScore))/100)*30;
+        // const DEVALUE = Number((DEvalue/DEinput)*50);
+        return (UTME + PUTME + Olevel).toFixed(2);
+    }
     const clickHandler = e =>{
         e.preventDefault();
         calcGrade();
-        setComposite(calcGrade)
+        setComposite(calcGrade);
     }
-    const calcGrade = ()=>{
-        return ((Number(utmeScore))/8 + ((Number(postUTMEScore))/100)*30 + 
-        ((Number(gradevalue1) + Number(gradevalue2) + Number(gradevalue3) + 
-        Number(gradevalue4) + Number(gradevalue5))/30)*20).toFixed(2);     ;
+    const clearHandler = e =>{
+        // e.preventDefault();
+        // // setUTMEScore(0);
+        // // setPostUTMEScore(0);
+        // // setInputText("User");
+        // // setGradeValue1(0);
+        // // setGradeValue2(0);
+        // // setGradeValue3(0);
+        // // setGradeValue4(0);
+        // // setGradeValue5(0);
+        // // setComposite(0);
     }
     const gradeAction = e=>{
        setGradeValue1(e.target.value);
@@ -46,7 +63,13 @@ const form =({subject, setInputText, inputText,
      const gradeAction4 = e=>{
         setGradeValue5(e.target.value);
      }
-   
+    //  const DEaction = e =>{
+    //      setDEvalue(e.target.value);
+    //  }
+    //  const DEinputHandler=e=>{
+    //      setDEinput(e.target.value);
+    //  }
+     
     return(
         <>
         <form>
@@ -55,23 +78,7 @@ const form =({subject, setInputText, inputText,
                     <label>Username</label>
                 </div>
                 <div className='form-col input'>
-                    <input onChange={inputHandler} type='text'></input>
-                </div>
-            </div>
-            <div className='form-flex'>
-                <div className='form-col label'>
-                    <label>UTME Score</label>
-                </div>
-                <div className='form-col input'>
-                    <input onChange={utmeInput} type='number'></input>
-                </div>
-            </div>
-            <div className='form-flex'>
-                <div className='form-col label'>
-                    <label>Post UTME score</label>
-                </div>
-                <div className='form-col input'>
-                    <input onChange={postUtmeInput} type='number'></input>
+                    <input placeholder='Enter Username' onChange={inputHandler} type='text'></input>
                 </div>
             </div>
             <div className='form-flex'>
@@ -135,10 +142,46 @@ const form =({subject, setInputText, inputText,
                    </select>
                 </div>
             </div>
-            <div className='submit'>
+            <div className='form-flex'>
+                <div className='form-col label'>
+                    <label>Post UTME score</label>
+                </div>
+                <div className='form-col input'>
+                    <input placeholder={0} onChange={postUtmeInput} type='number'></input>
+                </div>
+            </div>
 
-            <button onClick={clickHandler}>Calculate</button>
-            <h3 className='description'>Hello {inputText}, your composite is {composite} points.</h3>
+            {/* <h1 className='category'>For UTME candidates Only</h1> */}
+            <div className='form-flex'>
+                <div className='form-col label'>
+                    <label>UTME Score</label>
+                </div>
+                <div className='form-col input'>
+                    <input placeholder={0}  onChange={utmeInput} type='number'></input>
+                </div>
+            </div>
+
+            {/* <h1 className='category'>For Direct Entry candidates Only</h1>
+            <div className='form-flex'>
+                <div className='form-col label'>
+                    <label>Grade Total/Points obtainable</label>
+                </div>
+                <div className='form-col input'>
+                <input placeholder={"4.0"} type='number' onChange={DEaction}></input>
+                </div>
+            </div>
+            <div className='form-flex'>
+                <div className='form-col label'>
+                    <label>CGPA/Points Obtained</label>
+                </div>
+                <div className='form-col input'>
+                    <input onChange={DEinputHandler} type='number'></input>
+                </div>
+            </div> */}
+            <div className='submit'>
+            <button onClick={clickHandler}>Calculate Composite</button> 
+            <button className="clear" onClick={clearHandler}>Clear</button>
+            <h3 className='result'>Hello {inputText}, your composite is <span> {composite} points.</span></h3>
             </div>
         </form>
         </>

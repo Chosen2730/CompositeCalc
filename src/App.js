@@ -12,6 +12,8 @@ const [gradeValue2, setGradeValue2]=useState(0);
 const [gradeValue3, setGradeValue3]=useState(0);
 const [gradeValue4, setGradeValue4]=useState(0);
 const [gradeValue5, setGradeValue5]=useState(0);
+const [DEvalue, setDEvalue]=useState(0);
+const [DEinput, setDEinput]=useState(0);
 
 const [composite, setComposite]=useState(0);
 
@@ -37,7 +39,10 @@ const [composite, setComposite]=useState(0);
   setGradeValue5 = {setGradeValue5}
   composite = {composite}
   setComposite = {setComposite}
-
+  DEinput = {DEinput}
+  setDEinput = {setDEinput}
+  DEvalue = {DEvalue}
+  setDEvalue = {setDEvalue} 
   />
   </>
   );
