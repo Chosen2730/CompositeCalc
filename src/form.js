@@ -1,25 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import SelectGrade from "./Gradeselect";
 
-const Form = ({ setCategory, category, user, setUser, compositeContainer }) => {
-  const {
-    name,
-    examCategory,
-    putmeValue,
-    utmeValue,
-    DETotal,
-    DEValue,
-    mathsValue,
-    englishValue,
-    biologyValue,
-    physicsValue,
-    chemValue,
-    composite,
-    showComposite,
-  } = user;
-  const changeCategory = (e) => {
-    setCategory(e.target.value);
-  };
+const Form = () => {
+  const [user, setUser] = useState({});
+  const [composite, setComposite] = useState(0);
   const inputHandler = (e) => {
     const value = e.target.value;
     const name = e.target.name;
@@ -28,204 +12,228 @@ const Form = ({ setCategory, category, user, setUser, compositeContainer }) => {
       [name]: value,
     });
   };
+
   const calculate = (e) => {
     e.preventDefault();
-    const allValues = [
-      mathsValue,
-      chemValue,
-      englishValue,
-      physicsValue,
-      biologyValue,
-      putmeValue,
+    const {
+      maths,
+      eng,
+      chm,
+      bio,
+      phy,
+      no_of_sittings,
       utmeValue,
       DETotal,
       DEValue,
-    ];
-    const values = allValues.map((value) => {
-      return Number(value);
-    });
-    const [m, c, en, p, b, putme, utme, dt, d] = values;
-    const OlevelTotal = ((m + c + en + p + b) / 30) * 20;
-    const utmeTotal = utme / 8;
-    const putmeTotal = (putme / 100) * 30;
-    const deTotal = (d / dt) * 50;
+      category,
+    } = user;
+    const Olevel = +maths + +eng + +chm + +bio + +phy;
+    const OlevelTotal = (Olevel / 30) * 30;
+    const utmeTotal = (+utmeValue / 400) * 60;
+    const DE = (+DEValue / +DETotal) * 60;
+    let total;
+    console.log(category === "DE");
     if (category === "DE") {
-      const total = (OlevelTotal + putmeTotal + deTotal).toFixed(2);
-      setUser({ ...user, composite: total, showComposite: true });
+      total = OlevelTotal + DE + +no_of_sittings;
     } else if (category === "UTME") {
-      const total = (OlevelTotal + utmeTotal + putmeTotal).toFixed(2);
-      setUser({ ...user, composite: total, showComposite: true });
-    } else {
-      setUser({ ...user, composite: 0, showComposite: false });
+      total = OlevelTotal + utmeTotal + +no_of_sittings;
     }
+    setComposite(total);
   };
+
   return (
-    <>
-      <form>
-        <div className='form-flex'>
-          <div className='form-col label'>
-            <label htmlFor='userName'>Username</label>
-          </div>
-          <div className='form-col input'>
+    <form className='text-white bg-opacity-50'>
+      <h2 className='font-medium text-lg uppercase text-green-500 mt-10'>
+        Personal Information
+      </h2>
+      <div className='my-5 bg-gray-900 bg-opacity-60 p-8 rounded-2xl'>
+        <div className=''>
+          <div className=''>
+            <label htmlFor='userName' className='font-medium'>
+              Username
+            </label>
             <input
               placeholder='Enter Username'
               name='name'
               type='text'
               id='userName'
-              value={name}
+              className='my-2 p-3 w-full rounded-md bg-gray-700 placeholder: text-xs'
               onChange={inputHandler}
-            ></input>
+            />
           </div>
         </div>
-        <div className='form-flex'>
-          <div className='form-col label'>
-            <label htmlFor='type'>Exam Type</label>
-          </div>
-          <div className='form-col input'>
-            <select
-              id='type'
-              onChange={inputHandler}
-              name='examCategory'
-              value={examCategory}
-            >
-              <option>WAEC</option>
-              <option>NECO</option>
-            </select>
-          </div>
-        </div>
-        <div className='form-flex'>
-          <div className='form-col label'>
-            <label className='selectLabel'>Mathematics</label>
-          </div>
-          <div className='form-col input'>
-            <select onChange={inputHandler} name='mathsValue'>
-              <SelectGrade />
-            </select>
-          </div>
-        </div>
-        <div className='form-flex'>
-          <div className='form-col label'>
-            <label className='selectLabel'>English</label>
-          </div>
-          <div className='form-col input'>
-            <select onChange={inputHandler} name='englishValue'>
-              <SelectGrade />
-            </select>
-          </div>
-        </div>
-        <div className='form-flex'>
-          <div className='form-col label'>
-            <label className='selectLabel'>Physics</label>
-          </div>
-          <div className='form-col input'>
-            <select onChange={inputHandler} name='physicsValue'>
-              <SelectGrade />
-            </select>
-          </div>
-        </div>
-        <div className='form-flex'>
-          <div className='form-col label'>
-            <label className='selectLabel'>Biology</label>
-          </div>
-          <div className='form-col input'>
-            <select onChange={inputHandler} name='biologyValue'>
-              <SelectGrade />
-            </select>
-          </div>
-        </div>
-        <div className='form-flex'>
-          <div className='form-col label'>
-            <label className='selectLabel'>Chemistry</label>
-          </div>
-          <div className='form-col input'>
-            <select onChange={inputHandler} name='chemValue'>
-              <SelectGrade />
-            </select>
-          </div>
-        </div>
-        <div className='form-flex'>
-          <div className='form-col label'>
-            <label>Post UTME score</label>
-          </div>
-          <div className='form-col input'>
-            <input
-              placeholder={0}
-              type='number'
-              onChange={inputHandler}
-              name='putmeValue'
-            ></input>
-          </div>
-        </div>
-        <div className='form-flex'>
-          <div className='form-col label'>
-            <label className='selectLabel'>Select Category</label>
-          </div>
-          <div className='form-col input'>
-            <select onChange={changeCategory}>
-              <option>UTME/DE</option>
-              <option value='UTME'>UTME</option>
-              <option value='DE'>DE</option>
-            </select>
-          </div>
-        </div>
-        {category === "UTME" ? (
-          <div className='form-flex'>
-            <div className='form-col label'>
-              <label>UTME Score</label>
+        <div className='grid grid-cols-2 gap-4 my-4'>
+          <div className=''>
+            <div className=''>
+              <label className='font-medium' htmlFor='type'>
+                No of Sittings
+              </label>
+              <select
+                id='type'
+                className='my-2 p-3 w-full rounded-md bg-gray-700 placeholder: text-xs'
+                onChange={inputHandler}
+                name='no_of_sittings'
+              >
+                <option>Select</option>
+                <option value={10}>1</option>
+                <option value={6}>2</option>
+              </select>
             </div>
-            <div className='form-col input'>
+          </div>
+
+          <div className=''>
+            <div className=''>
+              <label className='font-medium'>Select Category</label>
+              <select
+                className='my-2 p-3 w-full rounded-md bg-gray-700 placeholder: text-xs'
+                name='category'
+                onChange={inputHandler}
+              >
+                <option>Select</option>
+                <option value='UTME'>UTME</option>
+                <option value='DE'>DE</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h2 className='font-medium text-lg uppercase text-green-500 mt-10'>
+        O Level Result Section
+      </h2>
+      <div className='my-5 bg-gray-900 bg-opacity-60 p-8 rounded-2xl grid-cols-2 grid gap-4'>
+        <div className=''>
+          <div className=''>
+            <label className='font-medium'>Mathematics</label>
+            <select
+              className='my-2 p-3 w-full rounded-md bg-gray-700 placeholder: text-xs'
+              onChange={inputHandler}
+              name='maths'
+            >
+              <SelectGrade />
+            </select>
+          </div>
+        </div>
+
+        <div className=''>
+          <div className=''>
+            <label className='font-medium'>English</label>
+            <select
+              className='my-2 p-3 w-full rounded-md bg-gray-700 placeholder: text-xs'
+              onChange={inputHandler}
+              name='eng'
+            >
+              <SelectGrade />
+            </select>
+          </div>
+        </div>
+
+        <div className=''>
+          <div className=''>
+            <label className='font-medium'>Physics</label>
+            <select
+              className='my-2 p-3 w-full rounded-md bg-gray-700 placeholder: text-xs'
+              onChange={inputHandler}
+              name='phy'
+            >
+              <SelectGrade />
+            </select>
+          </div>
+        </div>
+
+        <div className=''>
+          <div className=''>
+            <label className='font-medium'>Biology</label>
+            <select
+              className='my-2 p-3 w-full rounded-md bg-gray-700 placeholder: text-xs'
+              onChange={inputHandler}
+              name='bio'
+            >
+              <SelectGrade />
+            </select>
+          </div>
+        </div>
+
+        <div className=''>
+          <div className=''>
+            <label className='font-medium'>Chemistry</label>
+            <select
+              className='my-2 p-3 w-full rounded-md bg-gray-700 placeholder: text-xs'
+              onChange={inputHandler}
+              name='chm'
+            >
+              <SelectGrade />
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <h2 className='font-medium text-lg uppercase text-green-500 mt-10'>
+        UTME/DE Section
+      </h2>
+      <div className='my-5 bg-gray-900 bg-opacity-60 p-8 rounded-2xl grid grid-cols-2 gap-4'>
+        {user?.category === "UTME" ? (
+          <div className=''>
+            <div className=''>
+              <label className='font-medium'>UTME Score</label>
               <input
+                className='my-2 p-3 w-full rounded-md bg-gray-700 placeholder: text-xs'
                 placeholder={0}
                 type='number'
                 onChange={inputHandler}
                 name='utmeValue'
-              ></input>
+              />
             </div>
           </div>
-        ) : category === "DE" ? (
+        ) : user?.category === "DE" ? (
           <>
-            <div className='form-flex'>
-              <div className='form-col label'>
-                <label>Grade Total/Points obtainable</label>
-              </div>
-              <div className='form-col input'>
+            <div className=''>
+              <div className=''>
+                <label className='font-medium'>
+                  Grade Total/Points obtainable
+                </label>
                 <input
                   placeholder={"e.g., 4.0"}
                   type='number'
                   onChange={inputHandler}
                   name='DETotal'
-                ></input>
+                  className='my-2 p-3 w-full rounded-md bg-gray-700 placeholder: text-xs'
+                />
               </div>
             </div>
-            <div className='form-flex'>
-              <div className='form-col label'>
-                <label>CGPA/Points Obtained</label>
-              </div>
-              <div className='form-col input'>
+            <div className=''>
+              <div className=''>
+                <label className='font-medium'>CGPA/Points Obtained</label>
                 <input
+                  className='my-2 p-3 w-full rounded-md bg-gray-700 placeholder: text-xs'
                   type='number'
                   onChange={inputHandler}
                   name='DEValue'
-                ></input>
+                />
               </div>
             </div>
           </>
         ) : (
           <></>
         )}
-        {category && (
-          <div className='submit'>
-            <button onClick={calculate}>Calculate Composite</button>
-            {showComposite && (
-              <h3 className='result'>
-                Hello {name}, your composite is{" "}
-                <span ref={compositeContainer}>{composite}</span> points.
-              </h3>
-            )}
+      </div>
+      <div className='my-10 bg-gray-900 bg-opacity-60 p-8 rounded-2xl '>
+        {user?.category && (
+          <div className='flex flex-col items-center justify-center'>
+            <button
+              onClick={calculate}
+              className='bg-green-500 text-white p-3 px-10 rounded-xl'
+            >
+              Calculate Composite
+            </button>
+            <h3 className='my-5 text-lg font-medium text-center'>
+              Hello {user?.name}, your composite is{" "}
+              <span className='text-4xl'>{composite}%</span>
+            </h3>
           </div>
         )}
-      </form>
-    </>
+      </div>
+    </form>
   );
 };
 
