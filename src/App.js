@@ -26,9 +26,9 @@ const App = () => {
           <li className='list-disc'>
             For DE students, the grade total or point obtainable is the maximum
             CGPA or point that a candidate can attain, for instance, the grade
-            total for an ND student is 4.0, which IJMB is 15. Enter the
+            total for an ND student is 4.0, while IJMB is 15. Enter the
             corresponing max grade point obtainable for the result you are using
-            (NCE, IJMB, JUPEB, ND, HND, BSC)
+            (NCE, IJMB, JUPEB, ND, HND, BSC).
           </li>
           <li className='list-disc'>
             For DE students, the grade point or CGPA attained is the CGPA or

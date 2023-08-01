@@ -68,7 +68,7 @@ const Form = () => {
               Course Chosen
             </label>
             <input
-              placeholder='Enter Username'
+              placeholder='Enter Course chosen'
               name='course'
               type='text'
               id='course'
