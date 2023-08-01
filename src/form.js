@@ -38,16 +38,17 @@ const Form = () => {
     } else if (category === "UTME") {
       total = OlevelTotal + utmeTotal + +no_of_sittings;
     }
-    setComposite(total);
+
+    setComposite(total.toFixed(1));
   };
 
   return (
-    <form className='text-white bg-opacity-50'>
+    <form className='text-white bg-opacity-50' onSubmit={calculate}>
       <h2 className='font-medium text-lg uppercase text-green-500 mt-10'>
         Personal Information
       </h2>
       <div className='my-5 bg-gray-900 bg-opacity-60 p-8 rounded-2xl'>
-        <div className=''>
+        <div className='grid grid-cols-2 gap-4 my-4'>
           <div className=''>
             <label htmlFor='userName' className='font-medium'>
               Username
@@ -57,6 +58,21 @@ const Form = () => {
               name='name'
               type='text'
               id='userName'
+              required
+              className='my-2 p-3 w-full rounded-md bg-gray-700 placeholder: text-xs'
+              onChange={inputHandler}
+            />
+          </div>
+          <div className=''>
+            <label htmlFor='course' className='font-medium'>
+              Course Chosen
+            </label>
+            <input
+              placeholder='Enter Username'
+              name='course'
+              type='text'
+              id='course'
+              required
               className='my-2 p-3 w-full rounded-md bg-gray-700 placeholder: text-xs'
               onChange={inputHandler}
             />
@@ -73,6 +89,7 @@ const Form = () => {
                 className='my-2 p-3 w-full rounded-md bg-gray-700 placeholder: text-xs'
                 onChange={inputHandler}
                 name='no_of_sittings'
+                required
               >
                 <option>Select</option>
                 <option value={10}>1</option>
@@ -87,6 +104,7 @@ const Form = () => {
               <select
                 className='my-2 p-3 w-full rounded-md bg-gray-700 placeholder: text-xs'
                 name='category'
+                required
                 onChange={inputHandler}
               >
                 <option>Select</option>
@@ -109,6 +127,7 @@ const Form = () => {
               className='my-2 p-3 w-full rounded-md bg-gray-700 placeholder: text-xs'
               onChange={inputHandler}
               name='maths'
+              required
             >
               <SelectGrade />
             </select>
@@ -122,6 +141,7 @@ const Form = () => {
               className='my-2 p-3 w-full rounded-md bg-gray-700 placeholder: text-xs'
               onChange={inputHandler}
               name='eng'
+              required
             >
               <SelectGrade />
             </select>
@@ -135,6 +155,7 @@ const Form = () => {
               className='my-2 p-3 w-full rounded-md bg-gray-700 placeholder: text-xs'
               onChange={inputHandler}
               name='phy'
+              required
             >
               <SelectGrade />
             </select>
@@ -143,11 +164,12 @@ const Form = () => {
 
         <div className=''>
           <div className=''>
-            <label className='font-medium'>Biology</label>
+            <label className='font-medium'>Biology/Geography</label>
             <select
               className='my-2 p-3 w-full rounded-md bg-gray-700 placeholder: text-xs'
               onChange={inputHandler}
               name='bio'
+              required
             >
               <SelectGrade />
             </select>
@@ -161,6 +183,7 @@ const Form = () => {
               className='my-2 p-3 w-full rounded-md bg-gray-700 placeholder: text-xs'
               onChange={inputHandler}
               name='chm'
+              required
             >
               <SelectGrade />
             </select>
@@ -182,6 +205,8 @@ const Form = () => {
                 type='number'
                 onChange={inputHandler}
                 name='utmeValue'
+                max={400}
+                required
               />
             </div>
           </div>
@@ -197,7 +222,9 @@ const Form = () => {
                   type='number'
                   onChange={inputHandler}
                   name='DETotal'
+                  step='any'
                   className='my-2 p-3 w-full rounded-md bg-gray-700 placeholder: text-xs'
+                  required
                 />
               </div>
             </div>
@@ -207,8 +234,10 @@ const Form = () => {
                 <input
                   className='my-2 p-3 w-full rounded-md bg-gray-700 placeholder: text-xs'
                   type='number'
+                  step='any'
                   onChange={inputHandler}
                   name='DEValue'
+                  required
                 />
               </div>
             </div>
@@ -220,14 +249,11 @@ const Form = () => {
       <div className='my-10 bg-gray-900 bg-opacity-60 p-8 rounded-2xl '>
         {user?.category && (
           <div className='flex flex-col items-center justify-center'>
-            <button
-              onClick={calculate}
-              className='bg-green-500 text-white p-3 px-10 rounded-xl'
-            >
+            <button className='bg-green-500 text-white p-3 px-10 rounded-xl'>
               Calculate Composite
             </button>
             <h3 className='my-5 text-lg font-medium text-center'>
-              Hello {user?.name}, your composite is{" "}
+              Hello {user?.name}, your composite for {user?.course} is{" "}
               <span className='text-4xl'>{composite}%</span>
             </h3>
           </div>

@@ -4,7 +4,7 @@ import logo from "./logo.png";
 const header = () => {
   return (
     <div className='flex flex-col items-center justify-center'>
-      <img className='logo' alt='logo' src={logo}></img>
+      <img className='w-48' alt='logo' src={logo}></img>
       <h1 className='text-4xl my-2 font-bold text-green-300 text-center'>
         Composite Calculator
       </h1>
